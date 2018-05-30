@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" />
+  <component name="SbtLocalSettings">
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$/../EFP-scala" value="1483886445273" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/Course1" value="1465050127223" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/Course2/calculator" value="1465300146000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/Course2/quickcheck" value="1464277370000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/Course2/streams" value="1464276252000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/Course3/scalashop" value="1465225094000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/example" value="1459509174000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/forcomp" value="1462306012000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/funsets/funsets" value="1462309040000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/objsets" value="1462312046000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/patmat" value="1462369264000" />
+        <entry key="$PROJECT_DIR$/../ScalaSpecialization/recfun" value="1462361930000" />
+        <entry key="$PROJECT_DIR$/../mealcounter" value="1474294800745" />
+        <entry key="$PROJECT_DIR$/../rolltracker" value="1480265286264" />
+        <entry key="$PROJECT_DIR$/../scalakoansexercises" value="1431787848000" />
+      </map>
+    </option>
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+</project>
