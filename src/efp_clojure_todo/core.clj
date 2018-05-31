@@ -13,7 +13,7 @@
     (case command
       "new" {:command :new :params params}
       "show" {:command :show :params params}
-      "delete" {:command :delete :params (int params)}
+      "delete" {:command :delete :params (Integer/parseInt params)}
       "exit" {:command :exit :params params}
       {:command nil})))
 
@@ -35,6 +35,9 @@
 (defn new-task [task]
   (swap! notes conj {:id (new-id) :task task}))
 
+(defn delete-task [id]
+  (swap! notes (fn [c] (filter #(not= id (:id %)) c))))
+
 (defn exit []
   (println "Goodbye...")
   (System/exit 0))
@@ -44,6 +47,7 @@
     (case (:command commmand)
       :show (show)
       :new (new-task (:params commmand))
+      :delete (delete-task (:params commmand))
       :exit (exit)
       (println "Invalid command...")))
   (command-loop))
