@@ -1,10 +1,24 @@
 (ns efp-clojure-todo.core
   (:require
     [clojure.string :as s]
-    [clojure.pprint :refer [print-table]])
+    [clojure.pprint :refer [print-table]]
+    [cheshire.core :as cs])
   (:gen-class))
 
-(defonce notes (atom []))
+(def file-name "notes.json")
+
+(if-not (.exists (clojure.java.io/file file-name))
+  (spit file-name (cs/generate-string [])))
+
+(defonce notes (atom (-> file-name
+                         slurp
+                         (cs/parse-string true))))
+
+(add-watch notes :watcher
+           (fn [key atom old-state new-state]
+             (->> new-state
+                 cs/generate-string
+                 (spit file-name))))
 
 (defn parse-command [input]
   (let [splitted (s/split input #" ")

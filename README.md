@@ -8,5 +8,4 @@ Exercise 53: Todo List
     
 ## Todo
 
-- Persistence to a file.
 - Persistence to a database (use a different branch).
