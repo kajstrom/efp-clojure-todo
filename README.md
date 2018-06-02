@@ -4,8 +4,8 @@ Exercise 53: Todo List
 
 ## Usage
 
-    $ java -jar efp-clojure-todo-0.1.0-standalone.jar [args]
-    
-## Todo
+MongoDb connection URI must be configured as environment variable TODO_MONGO_URI.
 
-- Persistence to a database (use a different branch).
+    mongodb://<user>:<pw>@<server>
+
+    $ java -jar efp-clojure-todo-0.1.0-standalone.jar [args]

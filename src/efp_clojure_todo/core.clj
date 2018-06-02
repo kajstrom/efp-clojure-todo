@@ -2,23 +2,24 @@
   (:require
     [clojure.string :as s]
     [clojure.pprint :refer [print-table]]
-    [cheshire.core :as cs])
+    [cheshire.core :as cs]
+    [monger.core :as mg]
+    [monger.collection :as mc])
+  (:import [org.bson.types ObjectId])
   (:gen-class))
 
-(def file-name "notes.json")
+(def coll "todos")
+(def mongo-uri (System/getenv "TODO_MONGO_URI"))
 
-(if-not (.exists (clojure.java.io/file file-name))
-  (spit file-name (cs/generate-string [])))
+(let [{:keys [conn db]} (mg/connect-via-uri mongo-uri)]
+  (defn add-task [task]
+    (mc/insert-and-return db coll (assoc task :_id (ObjectId.))))
+  ;;(defn delete-note [id])
+  (defn get-tasks []
+    (mc/find-maps db coll))
+  (defn disconnect [] (mg/disconnect conn)))
 
-(defonce notes (atom (-> file-name
-                         slurp
-                         (cs/parse-string true))))
-
-(add-watch notes :watcher
-           (fn [key atom old-state new-state]
-             (->> new-state
-                 cs/generate-string
-                 (spit file-name))))
+(def notes (atom (get-tasks)))
 
 (defn parse-command [input]
   (let [splitted (s/split input #" ")
@@ -35,25 +36,19 @@
   (let [input (read-line)]
     (parse-command input)))
 
-(defn new-id
-  "Creates (naively) a new id that is unique in the current notes collection"
-  []
-  (let [notes @notes]
-    (if (not-empty notes)
-      (+ 1 (apply max (map :id notes)))
-      1)))
-
 (defn show []
-  (print-table ["Id" "Task"] (map #(hash-map "Id" (:id %) "Task" (:task %)) @notes)))
+  (print-table ["Id" "Task"] (map #(hash-map "Id" (:_id %) "Task" (:task %)) @notes)))
 
 (defn new-task [task]
-  (swap! notes conj {:id (new-id) :task task}))
+  (let [added-task (add-task {:task task})]
+    (swap! notes conj added-task)))
 
 (defn delete-task [id]
   (swap! notes (fn [c] (filter #(not= id (:id %)) c))))
 
 (defn exit []
   (println "Goodbye...")
+  (disconnect)
   (System/exit 0))
 
 (defn command-loop[]
@@ -68,5 +63,6 @@
 
 (defn -main
   [& args]
+  (show)
   (println "'new [description]' creates a new task. 'show' lists tasks. 'delete [id]' deletes a task. 'exit' exits the program")
   (command-loop))
