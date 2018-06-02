@@ -14,7 +14,8 @@
 (let [{:keys [conn db]} (mg/connect-via-uri mongo-uri)]
   (defn add-task [task]
     (mc/insert-and-return db coll (assoc task :_id (ObjectId.))))
-  ;;(defn delete-note [id])
+  (defn remove-task [id]
+    (mc/remove-by-id db coll (ObjectId. id)))
   (defn get-tasks []
     (mc/find-maps db coll))
   (defn disconnect [] (mg/disconnect conn)))
@@ -28,7 +29,7 @@
     (case command
       "new" {:command :new :params params}
       "show" {:command :show :params params}
-      "delete" {:command :delete :params (Integer/parseInt params)}
+      "delete" {:command :delete :params params}
       "exit" {:command :exit :params params}
       {:command nil})))
 
@@ -44,7 +45,8 @@
     (swap! notes conj added-task)))
 
 (defn delete-task [id]
-  (swap! notes (fn [c] (filter #(not= id (:id %)) c))))
+  (remove-task id)
+  (swap! notes (fn [c] (filter #(not= id (.toString (:_id %))) c))))
 
 (defn exit []
   (println "Goodbye...")
